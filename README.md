@@ -57,19 +57,17 @@ The project uses ternary sentiment labels:
 ## Repository Structure
 
 ```text
-.
+drug-review-pharmacovigilance/
 ├── 1.cleaning_eda.ipynb
 ├── 2.classification.ipynb
 ├── 3.transformer_classification.ipynb
 ├── 4.build_chromadb.ipynb
-├── sentiment_classifier.py
-├── rag_tavily_agent_executor.py
-├── rag_tavily_chatbot.py
-├── data/
-│   └── DrugReviews.csv
-├── models/
-│   └── transformer_model/
-└── drug-review-chromadb/
+└── apps/
+│   └── sentiment_classifier.py
+│   └── rag_tavily_agent_executor.py
+│   └── rag_tavily_chatbot.py
+├── README.md
+└── requirements.txt
 ```
 
 ## Workflow
@@ -202,29 +200,6 @@ The RAG agent uses two main tools:
    - trims the result to stay within token limits
    - adds a short source list for traceability
 
-## Recommended Project Structure for Submission
-
-```text
-drug-review-pharmacovigilance/
-├── README.md
-├── requirements.txt
-├── data/
-│   └── DrugReviews.csv
-├── notebooks/
-│   ├── 1.cleaning_eda.ipynb
-│   ├── 2.classification.ipynb
-│   ├── 3.transformer_classification.ipynb
-│   └── 4.build_chromadb.ipynb
-├── apps/
-│   ├── sentiment_classifier.py
-│   └── rag_tavily_chatbot.py
-├── rag/
-│   └── rag_tavily_agent_executor.py
-├── models/
-│   └── transformer_model/
-└── drug-review-chromadb/
-```
-
 ## Installation
 
 ### 1. Create an environment
@@ -242,32 +217,22 @@ On Windows:
 
 ### 2. Install dependencies
 
-Create a `requirements.txt` similar to the following:
+`requirements.txt`
 
 ```txt
-pandas
-numpy
-scikit-learn
-matplotlib
-seaborn
-plotly
 streamlit
-torch
-transformers
-datasets
-shap
-langchain
-langchain-chroma
-langchain-community
 langchain-openai
+langchain-community
+langchain-chroma
+langchain-classic
 chromadb
 sentence-transformers
-tiktoken
-python-dotenv
 tavily-python
+python-dotenv
+tiktoken
 ```
 
-Then run:
+Run:
 
 ```bash
 pip install -r requirements.txt
