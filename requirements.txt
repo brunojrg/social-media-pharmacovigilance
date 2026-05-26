@@ -1,0 +1,10 @@
+streamlit
+langchain-openai
+langchain-community
+langchain-chroma
+langchain-classic
+chromadb
+sentence-transformers
+tavily-python
+python-dotenv
+tiktoken
