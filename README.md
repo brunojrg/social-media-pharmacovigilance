@@ -1,6 +1,6 @@
-# Drug Review Pharmacovigilance and RAG System
+# Social Media Pharmacovigilance and RAG System
 
-An end-to-end NLP and retrieval project built on a large drug review dataset, combining exploratory data analysis, ternary sentiment classification, transformer fine-tuning, vector search with ChromaDB, and a Streamlit chatbot with Tavily web fallback.
+An end-to-end NLP and retrieval project for social media pharmacovigilance built on a large drug review dataset, combining exploratory data analysis, ternary sentiment classification, transformer fine-tuning, vector search with ChromaDB, and a Streamlit chatbot with Tavily web search fallback.
 
 ## Project Overview
 
@@ -76,7 +76,7 @@ drug-review-pharmacovigilance/
 
 The EDA notebook prepares the dataset, inspects the schema, and supports visual analysis of the most frequent drugs, conditions, review-length distribution, rating distribution, likes distribution, and rating patterns by drug and condition.
 
-Typical EDA goals:
+EDA goals:
 
 - audit missing values and duplicates
 - inspect class balance across the 3 sentiment classes
@@ -88,7 +88,7 @@ Typical EDA goals:
 
 The classification notebook covers non-transformer modelling for sentiment prediction. This stage is useful as a baseline before moving to deep transformer models.
 
-Typical steps include:
+The steps include:
 
 - text cleaning and removal of stopwords
 - vectorization with TF-IDF features
@@ -132,7 +132,7 @@ The `sentiment_classifier.py` script provides a Streamlit interface for single-r
 
 Current app features:
 
-- load tokenizer and model from `models/transformer_model`
+- load tokenizer and model from `model`
 - accept free-text user input
 - predict Negative, Neutral, or Positive sentiment
 - display class confidence
@@ -158,7 +158,7 @@ Key chatbot features:
 - local-first retrieval from the review vector database
 - Tavily fallback for external medical information
 - ReAct-style agent loop with tool use
-- optional display of intermediate reasoning steps in the UI
+- chatbot memory for continuous interactions
 - extracted source list for Tavily-supported answers
 
 ## Model and App Details
