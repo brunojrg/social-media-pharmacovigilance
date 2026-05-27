@@ -316,13 +316,15 @@ These results suggest the fine-tuned transformer is the strongest classification
 
 Possible extensions include:
 
-- batch inference in the Streamlit sentiment app
+- evaluate binary classification (positive vs negative)
+- batch inference in the Streamlit sentiment app (eg. from CSV file)
+- aspect-based sentiment analysis for side effects, effectiveness, and ease of use
 - SHAP-based text explanation for the transformer model
+- use a proxy-label method, such as multi-view training, for labeling
 - stronger metadata-aware Chroma retrieval by drug and condition
-- separate Chroma collections for reviews vs reference sources
-- hybrid routing between local RAG, Tavily, and curated medical references
 - deployment of the chatbot and classifier apps
 - stricter evaluation of hallucination and retrieval quality in the RAG layer
+- create a social media scraper to monitor drug reviews
 
 ## Notes and Limitations
 
