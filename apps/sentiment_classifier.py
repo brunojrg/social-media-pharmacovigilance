@@ -3,10 +3,10 @@ import torch
 import numpy as np
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# Path to your saved model folder
-MODEL_PATH = "models/transformer_model"
+# Model folder
+MODEL_PATH = "../model"
 
-# Load model + tokenizer (cache for performance)
+# Load model + tokenizer
 @st.cache_resource
 def load_model():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
@@ -16,7 +16,7 @@ def load_model():
 
 tokenizer, model = load_model()
 
-# Label mapping (must match training)
+# Label mapping
 id2label = {0: "Negative", 1: "Neutral", 2: "Positive"}
 
 # UI
