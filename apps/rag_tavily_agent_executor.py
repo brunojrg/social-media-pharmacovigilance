@@ -8,6 +8,8 @@ from langchain_core.tools import Tool
 from langchain_community.tools import TavilySearchResults
 from langchain_classic.agents import AgentExecutor, create_react_agent
 from langchain_core.prompts import PromptTemplate
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
 import tiktoken
 
 load_dotenv()
@@ -23,7 +25,7 @@ def build_agent_executor():
         )
 
     # CSV search tool
-    def retrieve_csv(query: str, k: int = 4) -> str:
+    def retrieve_csv(query: str, k: int = 100) -> str:
         vs = get_vectorstore()
         docs = vs.similarity_search(query, k=k)
 
@@ -127,9 +129,30 @@ def build_agent_executor():
         )
     ]
 
+    def synthesize_from_steps(llm, query, intermediate_steps):
+        observations = []
 
-    template = '''"""
+        for i, (action, observation) in enumerate(intermediate_steps, 1):
+            tool_name = getattr(action, "tool", "unknown_tool")
+            tool_input = getattr(action, "tool_input", "")
+
+            observations.append(
+                f"[Step {i}]\n"
+                f"Tool: {tool_name}\n"
+                f"Tool Input: {tool_input}\n"
+                f"Observation:\n{str(observation)[:2000]}"
+            )
+
+        joined_observations = "\n\n".join(observations).strip()
+
+        if not joined_observations:
+            return "I couldn’t gather enough tool output to produce a final answer."
+
+    template = """
     You are a data scientist specialized in healthcare and pharmacovigilance.
+
+    Previous conversation:
+    {chat_history}
 
     You have access to the following tools:
     {tools}
@@ -146,7 +169,8 @@ def build_agent_executor():
     Final Answer: the final answer to the original question
 
     Guidelines:
-    - Prefer DrugReviewRetriever for dataset-specific questions.
+    - Prefer DrugReviewRetriever for dataset-specific questions. If a review has a rating ≤4 consider it a negative revies,
+    if the rating is 5-6 consider it neutral, and if it's ≥7 consider it positive.
     - Use TavilySafeSearch for external medical knowledge, guidelines, or recent information.
     - For any general medical or pharmacology question, you must use TavilySafeSearch before giving the Final Answer.
     - When using TavilySafeSearch, include a "Sources" section in the final answer.
@@ -154,12 +178,12 @@ def build_agent_executor():
     - Only include sources that came from the TavilySafeSearch tool output.
     - Use both tools when the user asks for dataset analysis plus medical explanation.
     - If information is uncertain or incomplete, say so clearly.
-    - If information is uncertain or incomplete, say so clearly.
     - Be concise, accurate, and evidence-based.
 
     Question: {input}
     Thought: {agent_scratchpad}
-    '''
+    """
+
     prompt = PromptTemplate.from_template(template)
 
     agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
@@ -168,12 +192,26 @@ def build_agent_executor():
         tools=tools,
         llm=llm,
         agent=agent,
-        verbose=True,
+        verbose=False,
         handle_parsing_errors=True,
-        max_iterations=8,
+        max_iterations=5,
         max_execution_time=180,
-        early_stopping_method="generate",
+        early_stopping_method="force",
         return_intermediate_steps=True,
     )
 
-    return agent_executor
+    history_store = {}
+
+    def get_session_history(session_id: str):
+        if session_id not in history_store:
+            history_store[session_id] = ChatMessageHistory()
+        return history_store[session_id]
+
+    agent_with_history = RunnableWithMessageHistory(
+        agent_executor,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+    )
+
+    return agent_with_history
