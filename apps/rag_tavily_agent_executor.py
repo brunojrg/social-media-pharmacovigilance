@@ -20,12 +20,14 @@ def build_agent_executor():
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
         return Chroma(
-            persist_directory="drug-review-chroma_db",
+            persist_directory="../drug-review-chroma_db",
             embedding_function=embeddings
         )
 
     # CSV search tool
-    def retrieve_csv(query: str, k: int = 100) -> str:
+    vs = get_vectorstore()
+
+    def retrieve_csv(query: str, k: int = 5) -> str:
         vs = get_vectorstore()
         docs = vs.similarity_search(query, k=k)
 
@@ -35,7 +37,7 @@ def build_agent_executor():
         results = []
         for i, doc in enumerate(docs, 1):
             row_id = doc.metadata.get("row", "unknown")
-            text = doc.page_content[:1200]
+            text = doc.page_content[:300]
             results.append(f"[Document {i} | row={row_id}]\n{text}")
 
         return "\n\n".join(results)
@@ -140,7 +142,7 @@ def build_agent_executor():
                 f"[Step {i}]\n"
                 f"Tool: {tool_name}\n"
                 f"Tool Input: {tool_input}\n"
-                f"Observation:\n{str(observation)[:2000]}"
+                f"Observation:\n{str(observation)[:600]}"
             )
 
         joined_observations = "\n\n".join(observations).strip()
