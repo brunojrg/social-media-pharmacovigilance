@@ -148,10 +148,10 @@ The notebook includes:
 
 The fine-tuned setup achieved the best performance:
 
-- F1 Macro: `0.917`
-- F1 Weighted: `0.925`
-- Class 0 Recall: `0.900`
-- Class 0 F1: `0.890`
+- F1 Macro: `0.894`
+- F1 Weighted: `0.905`
+- Class 0 Recall: `0.860`
+- Class 0 F1: `0.860`
 
 ### 5. Sentiment classifier app
 
@@ -332,7 +332,7 @@ streamlit run rag_tavily_chatbot.py
 | SVM with hyperparameter tuning | 0.813 | 0.866 | 0.838 | 0.846 |
 | Pipeline twitter-roberta-base-sentiment-latest (ternary) | 0.460 | 0.560 | 0.780 | 0.650 |
 | Trainer Class twitter-roberta-base-sentiment-latest (ternary) | 0.820 | 0.895 | 0.901 | 0.896 |
-| Trainer Class biobert-base-cased-v1.1 (binary) | 0.917 | 0.925 | 0.900 | 0.890 |
+| Trainer Class biobert-base-cased-v1.1 (binary) | 0.894 | 0.905 | 0.860 | 0.860 |
 
 
 ### Fine-tuned transformer performance
@@ -353,10 +353,10 @@ The fine-tuned trainer versions improves materially and reaches about:
 
 | Metric | Value |
 |---|---:|
-| F1 Macro | 0.917 |
-| F1 Weighted | 0.925 |
-| Class 0 Recall | 0.900 |
-| Class 0 F1 | 0.890 |
+| F1 Macro | 0.894 |
+| F1 Weighted | 0.905 |
+| Class 0 Recall | 0.860 |
+| Class 0 F1 | 0.860 |
 
 
 These results suggest the fine-tuned transformer is the strongest classification component currently implemented in the repository.
