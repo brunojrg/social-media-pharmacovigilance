@@ -368,7 +368,7 @@ The fine-tuned trainer versions improves materially and reaches about:
 | Class 0 F1 | 0.860 |
 
 
-These results suggest the fine-tuned transformer is the strongest classification component currently implemented in the repository.
+These results suggest the fine-tuned transformers are the strongest classification components currently implemented in the repository.
 
 ## Future Improvements
 
