@@ -388,7 +388,3 @@ Possible extensions include:
 - The RAG system is intended as an analytical support tool, not a medical diagnosis system.
 - External web search should be treated as supporting context, not as personalized medical advice.
 - The ChromaDB notebook currently stores each row as a document; future chunking and metadata filtering could improve retrieval quality.
-
-## Acknowledgements
-
-This project combines NLP, deep learning, vector retrieval, and agentic search to analyze patient-generated drug reviews in a pharmacovigilance-oriented workflow.
