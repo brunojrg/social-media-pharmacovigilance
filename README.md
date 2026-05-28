@@ -48,11 +48,18 @@ The original dataset has 392,510 rows and 9 columns centered on medicines, condi
 
 ### Label definition
 
-The project uses ternary sentiment labels:
+The project evaluates two approaches for sentiment labels:
+
+**Ternary**
 
 - `0` = Negative
 - `1` = Neutral
 - `2` = Positive
+
+**Binary**
+
+- `0`= Negative
+- `1`= Non-negative
 
 ## Repository Structure
 
@@ -60,8 +67,9 @@ The project uses ternary sentiment labels:
 drug-review-pharmacovigilance/
 ├── 1.cleaning_eda.ipynb
 ├── 2.classification.ipynb
-├── 3.transformer_classification.ipynb
-├── 4.build_chromadb.ipynb
+├── 3.transformer_ternary_classification.ipynb
+├── 4.transformer_binary_classification.ipynb
+├── 5.build_chromadb.ipynb
 └── apps/
 │   └── sentiment_classifier.py
 │   └── rag_tavily_agent_executor.py
@@ -125,8 +133,27 @@ The fine-tuned setup achieved the best performance:
 - Class 0 Recall: `0.901`
 - Class 0 F1: `0.896`
 
+### 4. Transformer-based binary classification
 
-### 4. Sentiment classifier app
+The transformer notebook fine-tunes a BERT sentiment model for 2-class prediction. The implementation uses `dmis-lab/biobert-base-cased-v1.1`, mapped to the project label scheme Negative and Non-negative. The aim was to improve the detection of negative sentiment.
+
+The notebook includes:
+
+- train/test split on review text and labels
+- Hugging Face `Dataset` conversion
+- tokenization with max length control
+- `Trainer`-based fine-tuning
+- evaluation with macro F1, weighted F1, recall, and confusion matrix
+- model export
+
+The fine-tuned setup achieved the best performance:
+
+- F1 Macro: `0.917`
+- F1 Weighted: `0.925`
+- Class 0 Recall: `0.900`
+- Class 0 F1: `0.890`
+
+### 5. Sentiment classifier app
 
 The `sentiment_classifier.py` script provides a Streamlit interface for single-review inference using the saved transformer model.
 
@@ -138,13 +165,13 @@ Current app features:
 - display class confidence
 - color-code the result for usability
 
-### 5. ChromaDB construction
+### 6. ChromaDB construction
 
 The ChromaDB notebook converts dataset rows into LangChain `Document` objects and persists a local vector database using `sentence-transformers/all-MiniLM-L6-v2` embeddings.
 
 This enables semantic retrieval over the local review corpus for downstream RAG applications.
 
-### 6. RAG + Tavily chatbot
+### 7. RAG + Tavily chatbot
 
 The chatbot layer lets an analyst ask natural-language questions about the review corpus. It first queries the local ChromaDB and can then enrich answers with Tavily web search when broader medical context is required.
 
@@ -163,7 +190,7 @@ Key chatbot features:
 
 ## Model and App Details
 
-### Transformer model
+### Transformer models
 
 The transformer workflow uses:
 
@@ -173,17 +200,26 @@ The transformer workflow uses:
 - `Trainer`
 - `DataCollatorWithPadding`
 
-The model card used in the notebook is:
+The model cards used in the notebook are:
 
 - `cardiffnlp/twitter-roberta-base-sentiment-latest`
+- `dmis-lab/biobert-base-cased-v1.1`
 
 The label mapping used in both training and inference is:
 
+- roBERTa
 ```python
 id2label = {
     0: "Negative",
     1: "Neutral",
     2: "Positive"
+}
+```
+- bioBERT
+```python
+id2label = {
+    0: "Negative",
+    1: "Non-negative",
 }
 ```
 
@@ -316,7 +352,6 @@ These results suggest the fine-tuned transformer is the strongest classification
 
 Possible extensions include:
 
-- evaluate binary classification (positive vs negative)
 - batch inference in the Streamlit sentiment app (eg. from CSV file)
 - aspect-based sentiment analysis for side effects, effectiveness, and ease of use
 - SHAP-based text explanation for the transformer model
