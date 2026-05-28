@@ -4,4 +4,3 @@ __pycache__/
 .ipynb_checkpoints/
 .env
 drug-review-chroma_db/
-models/

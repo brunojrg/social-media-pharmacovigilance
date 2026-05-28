@@ -65,15 +65,24 @@ The project evaluates two approaches for sentiment labels:
 
 ```text
 drug-review-pharmacovigilance/
-├── 1.cleaning_eda.ipynb
-├── 2.classification.ipynb
-├── 3.transformer_ternary_classification.ipynb
-├── 4.transformer_binary_classification.ipynb
-├── 5.build_chromadb.ipynb
-└── apps/
+├── apps/
 │   └── sentiment_classifier.py
 │   └── rag_tavily_agent_executor.py
 │   └── rag_tavily_chatbot.py
+├── models/
+│   └── config.json
+│   └── model.safetensors
+│   └── tokenizer.json
+│   └── tokenizer_config.json
+│   └── training_args.bin
+├── notebooks/
+│   └── 1.cleaning_eda.ipynb
+│   └── 2.classification.ipynb
+│   └── 3.transformer_ternary_classification.ipynb
+│   └── 4.transformer_binary_classification.ipynb
+│   └── 5.build_chromadb.ipynb
+├── .gitattributes
+├── .gitignore
 ├── README.md
 └── requirements.txt
 ```
