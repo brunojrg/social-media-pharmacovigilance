@@ -377,10 +377,10 @@ Possible extensions include:
 - batch inference in the Streamlit sentiment app (eg. from CSV file)
 - aspect-based sentiment analysis for side effects, effectiveness, and ease of use
 - SHAP-based text explanation for the transformer model
-- use a proxy-label method, such as multi-view training, for labeling
-- stronger metadata-aware Chroma retrieval by drug and condition
+- use a proxy-label method, such as multi-view training
+- stronger metadata-aware ChromaDB retrieval by drug and condition
 - deployment of the chatbot and classifier apps
-- stricter evaluation of hallucination and retrieval quality in the RAG layer
+- stricter evaluation of retrieval quality in the RAG layer
 - create a social media scraper to monitor drug reviews
 
 ## Notes and Limitations
@@ -388,7 +388,6 @@ Possible extensions include:
 - The RAG system is intended as an analytical support tool, not a medical diagnosis system.
 - External web search should be treated as supporting context, not as personalized medical advice.
 - The ChromaDB notebook currently stores each row as a document; future chunking and metadata filtering could improve retrieval quality.
-- The Streamlit classifier assumes the saved transformer model path exists and matches the training label order.
 
 ## Acknowledgements
 
