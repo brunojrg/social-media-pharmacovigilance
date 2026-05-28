@@ -10,7 +10,7 @@ The repository includes:
 
 - EDA and preprocessing notebooks
 - Classical text-classification experiments
-- Transformer-based ternary sentiment classification
+- Transformer-based binary and ternary sentiment classification
 - ChromaDB vector store construction from the review dataset
 - A Streamlit sentiment classifier app
 - A RAG + Tavily chatbot and agent-based executor
@@ -317,7 +317,6 @@ streamlit run rag_tavily_chatbot.py
 - What side effects are most commonly mentioned for lexapro?
 - Summarize patient sentiment for phentermine.
 - Compare what the reviews say about a drug with broader medical information from the web.
-- What patterns in the reviews suggest poor satisfaction for a specific medicine?
 
 ## Key Results
 
@@ -331,13 +330,16 @@ streamlit run rag_tavily_chatbot.py
 | SVM | 0.819 | 0.867 | 0.833 | 0.846 |
 | Logistic Regression with hyperparameter tuning | 0.816 | 0.866 | 0.831 | 0.845 |
 | SVM with hyperparameter tuning | 0.813 | 0.866 | 0.838 | 0.846 |
-| Pipeline twitter-roberta-base-sentiment-latest | 0.460 | 0.560 | 0.780 | 0.650 |
-| Trainer Class twitter-roberta-base-sentiment-latest | 0.820 | 0.895 | 0.901 | 0.896 |
+| Pipeline twitter-roberta-base-sentiment-latest (ternary) | 0.460 | 0.560 | 0.780 | 0.650 |
+| Trainer Class twitter-roberta-base-sentiment-latest (ternary) | 0.820 | 0.895 | 0.901 | 0.896 |
+| Trainer Class biobert-base-cased-v1.1 (binary) | 0.917 | 0.925 | 0.900 | 0.890 |
 
 
 ### Fine-tuned transformer performance
 
-The fine-tuned trainer version improves materially and reaches about:
+The fine-tuned trainer versions improves materially and reaches about:
+
+**Ternary classification**
 
 | Metric | Value |
 |---|---:|
@@ -345,6 +347,17 @@ The fine-tuned trainer version improves materially and reaches about:
 | F1 Weighted | 0.895 |
 | Class 0 Recall | 0.901 |
 | Class 0 F1 | 0.896 |
+
+
+**Binary classification**
+
+| Metric | Value |
+|---|---:|
+| F1 Macro | 0.917 |
+| F1 Weighted | 0.925 |
+| Class 0 Recall | 0.900 |
+| Class 0 F1 | 0.890 |
+
 
 These results suggest the fine-tuned transformer is the strongest classification component currently implemented in the repository.
 
